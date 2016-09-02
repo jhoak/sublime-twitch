@@ -9,6 +9,7 @@
 # - reposition minimap?
 # - handle text getting under chat sidebar
 # - decide on sidebar vs overlay (if that's even a choice)
+# - window spawn @ center of screen
 
 from tkinter import *
 
@@ -23,17 +24,19 @@ def connect(streamer_name, login_name, passwd):
 # Main window initialization
 basewindow = Tk()
 basewindow.title("Twitch Plugin Options")
-basewindow.geometry('360x200')
+basewindow.geometry('360x210')
 basewindow.resizable(width=False, height=False)
 
 # Now for frames
 topf, checkf, botf = (Frame(basewindow) for i in range(3))
 
 # Build top frame (stream name, username, password (latter 2 optional))
-Label(topf, text='Name of streamer to watch (required):', anchor=E).grid(row=0, column=0, pady=10)
+Label(topf, text='Streamer to watch (required):', anchor=E).grid(row=0, column=0, pady=10)
 Label(topf, text='Login name (optional):', anchor=E).grid(row=1, column=0, pady=10)
 Label(topf, text='Password (if logging in):', anchor=E).grid(row=2, column=0, pady=10)
-stream_name_field, username_field, passwd_field = (Entry(topf) if i != 2 else Entry(topf, show='*') for i in range(3))
+
+entries = (Entry(topf) if i != 2 else Entry(topf, show='*') for i in range(3))
+stream_name_field, username_field, passwd_field = entries
 stream_name_field.grid(row=0, column=1)
 username_field.grid(row=1, column=1)
 passwd_field.grid(row=2, column=1)
@@ -51,8 +54,8 @@ def try_ok():
 	
 botf_left, botf_right = (Frame(botf) for i in range(2))
 Button(botf_left, text='OK', width=10, command=try_ok).pack()
-Button(botf_right, text='Cancel', width=10, command=quit).pack()
 botf_left.grid(row=0, column=0, pady=0, padx=10)
+Button(botf_right, text='Cancel', width=10, command=quit).pack()
 botf_right.grid(row=0, column=1, pady=0, padx=10)
 botf.pack()
 
